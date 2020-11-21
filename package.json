@@ -1,0 +1,20 @@
+{
+  "name": "ResinTracker",
+  "version": "1.0.0",
+  "description": "Resin is the 'energy currency' of [Genshin Impact][gensinimpact] (GI). The ResinTracker project is a collection of tools to track this currency outside of the game. It is the stack with web API and a [Discord frontend](discord) (a bot) that will notify you when your Resin is about to cap.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antjowie/ResinTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antjowie/ResinTracker/issues"
+  },
+  "homepage": "https://github.com/antjowie/ResinTracker#readme"
+}
