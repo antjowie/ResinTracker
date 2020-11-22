@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/antjowie/ResinTracker/issues"
   },
-  "homepage": "https://github.com/antjowie/ResinTracker#readme"
+  "homepage": "https://github.com/antjowie/ResinTracker#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "firebase": "^8.1.1"
+  }
 }
