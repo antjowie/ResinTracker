@@ -1,7 +1,5 @@
 const firebase = require("firebase/app");
-
-// Add the Firebase products that you want to use
-const db = require("firebase/firestore");
+require("firebase/firestore");
 
 const firebaseConfig = {
     apiKey: "AIzaSyC-tTn_e21KcyN3x3w2HMAVPLiOWxuKyR4",
@@ -14,17 +12,34 @@ const firebaseConfig = {
     measurementId: "G-EV0BFJR8EQ",
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// For some reason subsequent calls have firebase already initialized, if that is the case, we won't init agin
+try {
+    firebase.app()   
+}
+catch {
+    firebase.initializeApp(firebaseConfig);
+}
 
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
 exports.handler = async (event, context) => {
-    let name = event.queryStringParameters.name || "World";
+    const name = event.queryStringParameters.name || "World";
+    const db = firebase.firestore();
+    const userRef = db.collection("users").doc(name);
 
-    // console.log(firebase);
+    let doc = await userRef.get();
+    // console.log(doc.exists);
     
-    return {
-        statusCode: 200,
-        body: JSON.stringify(`Hello ${name}`),
-    };
+    if(doc.exists) {
+        return {
+            statusCode: 200,
+            body: JSON.stringify(doc.data())
+        };        
+    }
+    else {
+        return {
+            statusCode: 406,
+            body: `Document ${name} does not exist`
+        };  
+    }
+    
 };
