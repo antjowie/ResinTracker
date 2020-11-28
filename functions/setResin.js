@@ -15,12 +15,12 @@ const firebaseConfig = {
 // https://docs.netlify.com/functions/build-with-javascript/#synchronous-function-format
 // Takes discord id as id and returns resin in seconds
 exports.handler = async (event, context) => {
-    const name = event.queryStringParameters.name || "World";
-    const id = event.queryStringParameters.discord;
+    // const name = event.queryStringParameters.name || "World";
     const resinCap = 160;
     const resinValue = 7 * 60;
-    
-    
+    const id = event.queryStringParameters.discord;
+    const resin = Math.min(event.queryStringParameters.resin, resinCap);
+        
     if (firebase.apps.length === 0) {
         firebase.initializeApp(firebaseConfig);
         
@@ -40,6 +40,13 @@ exports.handler = async (event, context) => {
         };
     }
     
+    if(!resin) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify("No parameter of type resin found. Pass current resin value of user")
+        };
+    }
+    
     const userRef = db.collection("resin").doc(id);
     
     // await userRef.set({
@@ -55,32 +62,36 @@ exports.handler = async (event, context) => {
             body: JSON.stringify(resin)
         };
     }
-    
-    if(doc.exists) {
-        const data = doc.data();
-        const {last, resin} = data;
 
-        // Calculate new resin value
-        const currentDate = Date();
-        const deltaTime = currentDate - Date.parse(last);
-        console.log(deltaTime);
-        resin = Math.min(resin + deltaTime.getTime() / 1000, resinCap);
-        
-        // Update the resin value
-        await updateDatabaseVal(userRef, {
-            resin: resin,
-            last: currentDate
-        });
-        
-        return createReturnVal(resin);
+    updateDatabaseVal(userRef, {
+        resin: resin * resinValue,
+        last: Math.floor(Date.now() / 1000)
+    });
+    
+    return {
+        statusCode: 200,
+        body: JSON.stringify(resin)
+    };
+    
+    if(!doc.exists) {
+        // Create empty user
     }
-    else {
-        // Create resin value
-        
-        return createReturnVal(resin);
-        // return {
-        //     statusCode: 406,
-        //     body: `Document ${name} does not exist`
-        // };  
-    }
+    
+    // Update the user
+    const data = await userRef.get();
+    const {last, resin} = data;
+
+    // Calculate new resin value
+    const currentDate = Date();
+    const deltaTime = currentDate - Date.parse(last);
+    console.log(deltaTime);
+    resin = Math.min(resin + deltaTime.getTime() / 1000, resinCap);
+    
+    // Update the resin value
+    await updateDatabaseVal(userRef, {
+        resin: resin,
+        last: currentDate
+    });
+    
+    return createReturnVal(resin);
 }
