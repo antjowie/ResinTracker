@@ -24,8 +24,17 @@ catch {
 exports.handler = async (event, context) => {
     const name = event.queryStringParameters.name || "World";
     const db = firebase.firestore();
-    const userRef = db.collection("users").doc(name);
+    
+    db.useEmulator("localhost", 8080);
+    
+    // const userRef = db.collection("users").doc(name);
+    const userRef = db.collection("test").doc(name);
 
+    await userRef.set({
+        last: Date(),
+        resin: 50
+    });
+    
     let doc = await userRef.get();
     // console.log(doc.exists);
     
@@ -42,4 +51,4 @@ exports.handler = async (event, context) => {
         };  
     }
     
-};
+}
