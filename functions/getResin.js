@@ -39,7 +39,7 @@ exports.handler = async (event, context) => {
         };
     }
     
-    const userRef = db.collection("test").doc(id);
+    const userRef = db.collection("resin").doc(id);
     
     // await userRef.set({
     //     last: Date(),
@@ -58,7 +58,12 @@ exports.handler = async (event, context) => {
     if(doc.exists) {
         const data = doc.data();
         let {last, resin} = data;
-
+        
+        
+        // console.log(last);
+        // console.log(resin);
+        
+        
         // Calculate new resin value
         const lastTime = last;
         const currentTime = Math.floor(Date.now() / 1000);

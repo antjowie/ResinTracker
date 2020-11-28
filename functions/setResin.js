@@ -73,25 +73,25 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(resin)
     };
     
-    if(!doc.exists) {
-        // Create empty user
-    }
+    // if(!doc.exists) {
+    //     // Create empty user
+    // }
     
-    // Update the user
-    const data = await userRef.get();
-    const {last, resin} = data;
+    // // Update the user
+    // const data = await userRef.get();
+    // const {last, resin} = data;
 
-    // Calculate new resin value
-    const currentDate = Date();
-    const deltaTime = currentDate - Date.parse(last);
-    console.log(deltaTime);
-    resin = Math.min(resin + deltaTime.getTime() / 1000, resinCap);
+    // // Calculate new resin value
+    // const currentDate = Date();
+    // const deltaTime = currentDate - Date.parse(last);
+    // console.log(deltaTime);
+    // resin = Math.min(resin + deltaTime.getTime() / 1000, resinCap);
     
-    // Update the resin value
-    await updateDatabaseVal(userRef, {
-        resin: resin,
-        last: currentDate
-    });
+    // // Update the resin value
+    // await updateDatabaseVal(userRef, {
+    //     resin: resin,
+    //     last: currentDate
+    // });
     
-    return createReturnVal(resin);
+    // return createReturnVal(resin);
 }
