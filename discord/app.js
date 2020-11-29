@@ -2,6 +2,7 @@ const {token} = require("../token.json")
 const path = require('path');
 const resin = require('./resin.js');
 const Discord = require('discord.js');
+const { start } = require("repl");
 const client = new Discord.Client();
 const prefix = '~';
 
@@ -23,26 +24,33 @@ client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     console.log(message.content);
 
-    if(startRevolution() && message.content.startsWith(prefix)){
-        if(message.member.voice.channel){
-            connection = await message.member.voice.channel.join();
-            // path.resolve(process.argv[1], "..", "sounds", "qwert.mp3")
-            var dispatcher1 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution1.wav");
-        
-            dispatcher1.on('finish', () => {
-                var dispatcher2 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution2.wav");
-                dispatcher2.on('finish', () => {
-                    var dispatcher3 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution3.wav");
-                    dispatcher3.on('finish', () => {
-                        connection.disconnect();
+    
+    const revolution = async (shouldStart) => {  
+        if(shouldStart && message.content.startsWith(prefix)){
+            if(message.member.voice.channel){
+                connection = await message.member.voice.channel.join();
+                // path.resolve(process.argv[1], "..", "sounds", "qwert.mp3")
+                
+                var dispatcher1 = connection.play(path.resolve(process.argv[1],"..", "sounds", "revolution1.wav"));
+                // var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "qwert.mp3"));
+                // console.log(path.resolve(process.argv[1]),"..", "sounds", "revolution1.wav");
+                
+                dispatcher1.on('finish', () => {
+                    var dispatcher2 = connection.play(path.resolve(process.argv[1],"..", "sounds", "revolution2.mp3"));
+                    dispatcher2.on('finish', () => {
+                        var dispatcher3 = connection.play(path.resolve(process.argv[1],"..", "sounds", "revolution3.mp3"));
+                        dispatcher3.on('finish', () => {
+                            connection.disconnect();
+                        });
                     });
                 });
-            });
-        }else{
-            message.channel.send('tá am na ndaoine thart');
+            }else{
+                message.channel.send('tá am na ndaoine thart');
+            }
+            return;
         }
-        return;
-    }
+    };
+    revolution(startRevolution());
 
     // Join the same voice channel of the author of the message
     if (message.member.voice.channel && message.content === `${prefix}start`) {
@@ -56,6 +64,7 @@ client.on('message', async message => {
 
     if( message.content === `${prefix}test`){
         console.log(message.author.id);
+        revolution(true);
     }
 
     if (message.content === `${prefix}ping`) {

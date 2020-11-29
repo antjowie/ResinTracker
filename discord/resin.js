@@ -19,7 +19,8 @@ const getTimeAtResinCap = (resinSec) => {
     // const current = Date(Date().now() + resinLeftSec * 1000);
     const dateAtCap = new Date(Date.now() + resinLeftSec * 1000);
     
-    return dateAtCap.toLocaleTimeString();
+    // return dateAtCap.toLocaleTimeString();
+    return dateAtCap.toTimeString().substr(0,8);
     // return `${dateAtCap.toDateString()} ${dateAtCap.toTimeString()}`;
     // console.log(dateAtCap.toDateString());
     // console.log(dateAtCap.toTimeString());
@@ -64,7 +65,7 @@ module.exports = {
     commandCallback
 }
 
-// console.log(getTimeAtResinCap(10));
+console.log(getTimeAtResinCap(80 * resinValue));
 
 // const test = async() =>
 // {    
