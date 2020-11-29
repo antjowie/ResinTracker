@@ -8,7 +8,7 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
-client.login('*****************************');
+client.login(':)');
 
 client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -62,27 +62,33 @@ function playStupidVoice(message) {
 
     switch (command) {
         case 'neville':
-            var dispatcher = connection.play('sounds/qwert.m4a');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/qwert.mp3`);
             break;
         case 'that':
-            var dispatcher = connection.play('sounds/kleine_kindjes.wav');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/kleine_kindjes.wav`);
             break;
         case 'rezero':
-            var dispatcher = connection.play('sounds/PTSD.mp3');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/PTSD.mp3`);
             break;
         case 'tay':
-            var dispatcher = connection.play('sounds/Strakke_tay.mp3');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/Strakke_tay.mp3`);
             break;
         case 'tay2':
-            var dispatcher = connection.play('sounds/tay_owo.wav');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tay_owo.wav`);
             break;
         case 'tay3':
-            var dispatcher = connection.play('sounds/zo_hardd.wav');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/zo_hardd.wav`);
             break;
         case 'tay4':
-            var dispatcher = connection.play('sounds/tay4.mp4');
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tay4.mp3`);
+            break;
+        case 'yes':
+            console.log("Hello");
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/yes.mp3`);
+            break;
         default:
-            var dispatcher = connection.play('sounds/qwery.m4a');
+            console.log("Bye");
+            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tja.mp3`);
             break
     }
 

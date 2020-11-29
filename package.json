@@ -18,8 +18,13 @@
   },
   "homepage": "https://github.com/antjowie/ResinTracker#readme",
   "dependencies": {
-    "discord": "^0.8.2",
-    "discord.js": "^12.4.1",
-    "firebase": "^8.1.1"
+    "discord.js": "^12.5.1",
+    "ffmpeg-static": "^4.2.7",
+    "firebase": "^8.1.1",
+    "node-opus": "^0.3.3",
+    "opus": "0.0.0",
+    "opusscript": "0.0.7",
+    "querystring": "^0.2.0",
+    "rm": "^0.1.8"
   }
 }
