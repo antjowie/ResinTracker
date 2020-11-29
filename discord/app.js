@@ -9,7 +9,7 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
-client.login(':(');
+client.login('Nzc5NDE1MzEyOTI3OTQ4ODMx.X7gNEw.iI_qfBP-XiszoAFYFESFB0SqTDU');
 
 function startRevolution(){
     nr = Math.floor(Math.random() * Math.floor(6));
@@ -37,10 +37,7 @@ client.on('message', async message => {
             });
         }else{
             message.channel.send('tá am na ndaoine thart');
-            await sleep(500);
-            message.channel.send('tá am na ndaoine thart');
         }
-
         return;
     }
 
