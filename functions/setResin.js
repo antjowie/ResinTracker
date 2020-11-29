@@ -17,7 +17,7 @@ const firebaseConfig = {
 exports.handler = async (event, context) => {
     // const name = event.queryStringParameters.name || "World";
     const resinCap = 160;
-    const resinValue = 7 * 60;
+    const resinValue = 8 * 60;
     const id = event.queryStringParameters.discord;
     const resin = Math.min(event.queryStringParameters.resin, resinCap);
         
