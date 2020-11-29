@@ -12,7 +12,7 @@ client.once('ready', () => {
 client.login('Nzc5NDE1MzEyOTI3OTQ4ODMx.X7gNEw.iI_qfBP-XiszoAFYFESFB0SqTDU');
 
 function startRevolution(){
-    nr = Math.floor(Math.random() * Math.floor(6));
+    nr = Math.floor(Math.random() * Math.floor(20));
     revolution = nr === 1;
     return revolution;
 }
