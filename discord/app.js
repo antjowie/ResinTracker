@@ -8,11 +8,40 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
-client.login(':)');
+client.login(':(');
+
+function startRevolution(){
+    nr = Math.floor(Math.random() * Math.floor(6));
+    revolution = nr === 1;
+    return revolution;
+}
 
 client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     console.log(message.content);
+
+    if(startRevolution() && message.content.startsWith(prefix)){
+        if(message.member.voice.channel){
+            connection = await message.member.voice.channel.join();
+            var dispatcher1 = connection.play(`${process.argv[1]}/../sounds/revolution1.wav`);
+        
+            dispatcher1.on('finish', () => {
+                var dispatcher2 = connection.play(`${process.argv[1]}/../sounds/revolution2.mp3`);
+                dispatcher2.on('finish', () => {
+                    var dispatcher3 = connection.play(`${process.argv[1]}/../sounds/revolution3.mp3`);
+                    dispatcher3.on('finish', () => {
+                        connection.disconnect();
+                    });
+                });
+            });
+        }else{
+            message.channel.send('tá am na ndaoine thart');
+            await sleep(500);
+            message.channel.send('tá am na ndaoine thart');
+        }
+
+        return;
+    }
 
     // Join the same voice channel of the author of the message
     if (message.member.voice.channel && message.content === `${prefix}start`) {
@@ -100,5 +129,5 @@ function playStupidVoice(message) {
         console.log('audio.mp3 has finished playing!');
     });
 
-    message.channel.send('akwụna' + command);
+    message.channel.send('akwụna ' + command);
 }
