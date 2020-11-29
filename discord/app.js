@@ -1,3 +1,4 @@
+const resin = require('./resin.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const prefix = '~';
@@ -50,8 +51,8 @@ client.on('message', async message => {
         connection.disconnect();
     }
 
-    if (message.content === `${prefix}resin`) {
-        getResin(message);
+    if (message.content.startsWith(`${prefix}resin`)) {
+        await resin.commandCallback(message);
     }
 
 });
