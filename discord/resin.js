@@ -38,7 +38,7 @@ const commandCallback = async (message) => {
         
         await setResin(message.author.id, args[1]);
         
-        let resinSec = await getResin(message.author.id);
+        let resinSec = args[1] * resinValue//await getResin(message.author.id);
         let timeLeft = new Date((resinValue * resinCap - resinSec) * 1000).toISOString().substr(11,8);
         message.channel.send(`<@${message.author.id}> Resin ${Math.floor(resinSec / resinValue)}/${resinCap} ${timeLeft} left`);
     }

@@ -1,4 +1,5 @@
 const {token} = require("../token.json")
+const path = require('path');
 const resin = require('./resin.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -13,7 +14,7 @@ client.once('ready', () => {
 client.login(token);
 
 function startRevolution(){
-    nr = Math.floor(Math.random() * Math.floor(20));
+    nr = Math.floor(Math.random() * Math.floor(10));
     revolution = nr === 1;
     return revolution;
 }
@@ -25,12 +26,13 @@ client.on('message', async message => {
     if(startRevolution() && message.content.startsWith(prefix)){
         if(message.member.voice.channel){
             connection = await message.member.voice.channel.join();
-            var dispatcher1 = connection.play(`${process.argv[1]}/../sounds/revolution1.wav`);
+            // path.resolve(process.argv[1], "..", "sounds", "qwert.mp3")
+            var dispatcher1 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution1.wav");
         
             dispatcher1.on('finish', () => {
-                var dispatcher2 = connection.play(`${process.argv[1]}/../sounds/revolution2.mp3`);
+                var dispatcher2 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution2.wav");
                 dispatcher2.on('finish', () => {
-                    var dispatcher3 = connection.play(`${process.argv[1]}/../sounds/revolution3.mp3`);
+                    var dispatcher3 = connection.play(path.resolve(process.argv[1]),"..", "sounds", "revolution3.wav");
                     dispatcher3.on('finish', () => {
                         connection.disconnect();
                     });
@@ -84,39 +86,41 @@ client.on('message', async message => {
 
 });
 
-function playStupidVoice(message) {
+async function playStupidVoice(message) {
     const args = message.content.slice(`${prefix}stupid`.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
 
+    if(!connection) connection = await message.member.voice.channel.join();
+    
     switch (command) {
         case 'neville':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/qwert.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "qwert.mp3"));
             break;
         case 'that':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/kleine_kindjes.wav`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "kleine_kindjes.wav"));
             break;
         case 'rezero':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/PTSD.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "PTSD.mp3"));
             break;
         case 'tay':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/Strakke_tay.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "Strakke_tay.mp3"));
             break;
         case 'tay2':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tay_owo.wav`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tay_owo.wav"));
             break;
         case 'tay3':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/zo_hardd.wav`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "zo_hardd.wav"));
             break;
         case 'tay4':
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tay4.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tay4.mp3"));
             break;
         case 'yes':
             console.log("Hello");
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/yes.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "yes.mp3"));
             break;
         default:
             console.log("Bye");
-            var dispatcher = connection.play(`${process.argv[1]}/../sounds/tja.mp3`);
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tja.mp3"));
             break
     }
 
