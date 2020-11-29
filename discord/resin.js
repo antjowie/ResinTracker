@@ -19,7 +19,7 @@ const commandCallback = async (message) => {
     // console.log(args);
     
     if(args.length == 0) {
-        return message.channel.send("Invalid args: get | set resin");
+        return message.channel.send(`<@${message.author.id}> Invalid args: get | set resin`);
     }
     
     const resinValue = 8 * 60;
@@ -28,7 +28,7 @@ const commandCallback = async (message) => {
     if(args[0] === "get") {
         let resinSec = await getResin(message.author.id);
         let timeLeft = new Date((resinValue * resinCap - resinSec) * 1000).toISOString().substr(11,8);
-        message.channel.send(`Resin ${Math.floor(resinSec / resinValue)}/${resinCap} ${timeLeft} left`);
+        message.channel.send(`<@${message.author.id}> Resin ${Math.floor(resinSec / resinValue)}/${resinCap} ${timeLeft} left`);
     }
     else if (args[0] === "set") {
         // TODO: Data validation
@@ -40,7 +40,7 @@ const commandCallback = async (message) => {
         
         let resinSec = await getResin(message.author.id);
         let timeLeft = new Date((resinValue * resinCap - resinSec) * 1000).toISOString().substr(11,8);
-        message.channel.send(`Resin ${Math.floor(resinSec / resinValue)}/${resinCap} ${timeLeft} left`);
+        message.channel.send(`<@${message.author.id}> Resin ${Math.floor(resinSec / resinValue)}/${resinCap} ${timeLeft} left`);
     }
 }
 

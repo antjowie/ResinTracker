@@ -1,3 +1,4 @@
+const {token} = require("../token.json")
 const resin = require('./resin.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -9,7 +10,7 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
-client.login(':)');
+client.login(token);
 
 client.on('message', async message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
