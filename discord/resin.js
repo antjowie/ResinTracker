@@ -14,6 +14,7 @@ const getResin = async (id) => await getJSON(`https://resintracker.netlify.app/a
 // Set the resin, expected in resin value
 const setResin = async (id, resin) => await getJSON(`https://resintracker.netlify.app/api/setResin?&discord=${id}&resin=${resin}`);
 
+// The timestamp at which your resin is capped
 const getTimeAtResinCap = (resinSec) => {
     const resinLeftSec = resinCap * resinValue - resinSec;
     // const current = Date(Date().now() + resinLeftSec * 1000);
@@ -26,6 +27,7 @@ const getTimeAtResinCap = (resinSec) => {
     // console.log(dateAtCap.toTimeString());
 }
 
+// Send the Discord message in the chat
 const sendResinMessage = (message, resinSec) => {
     let timeLeft = new Date((resinValue * resinCap - resinSec) * 1000).toISOString().substr(11,8);
     const author = `<@${message.author.id}>`;
