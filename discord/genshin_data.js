@@ -63,6 +63,7 @@ const getGenshinDatabase = async () => {
             
             // Add current row to the character database
             chars.forEach((name) => {
+                name = name.toLowerCase();
                 if(!db.chars[name]) 
                     db.chars[name] = {"talent": "none", "boss": "none"};
                 
