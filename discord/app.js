@@ -157,9 +157,10 @@ async function farmHandler(args, userId) {
         }
     }
     else if (args[0] === 'set') {
+        args.shift();
         var user = await dbHandler.get("resin", userId);
 
-        for (var i = 1; i < args.length; i++) {
+        for (var i = 0; i < args.length; i++) {
             var char = genshinDict.chars[args[i]];
 
             if (!char) {
