@@ -1,18 +1,36 @@
-const bent = require('bent')
-
-const getJSON = bent('json')
-const getBuffer = bent('buffer')
+const db = require("./database_handler.js");
 const resinValue = 8 * 60;
 const resinCap = 160;
-
-// let obj = await getJSON('http://site.com/json.api')
-// let buffer = await getBuffer('http://site.com/image.png')
+// db.initialize(false);
 
 // Returns resin in seconds
-const getResin = async (id) => await getJSON(`https://resintracker.netlify.app/api/getResin?&discord=${id}`);    
+const getResin = async (id) => {
+    const data = await db.get("resin", id);
+    let {last, resin} = data;
+    
+    // Calculate new resin value
+    const lastTime = last;
+    const currentTime = Math.floor(Date.now() / 1000);
+    const deltaTime = Math.floor(currentTime - lastTime);
+
+    resin = Math.min(resin + deltaTime, resinCap * resinValue);
+        
+    // Update the resin value
+    await db.set("resin", id, {
+        resin: resin,
+        last: currentTime
+    });
+    
+    return resin;
+}
 
 // Set the resin, expected in resin value
-const setResin = async (id, resin) => await getJSON(`https://resintracker.netlify.app/api/setResin?&discord=${id}&resin=${resin}`);
+const setResin = async (id, resin) => {
+    await db.set("resin",id,{
+        resin: resin * resinValue,
+        last: Math.floor(Date.now() / 1000)
+    });    
+}
 
 // The timestamp at which your resin is capped
 const getTimeAtResinCap = (resinSec) => {
@@ -58,8 +76,9 @@ const commandCallback = async (message) => {
         
         await setResin(message.author.id, args[1]);
         
-        let resinSec = args[1] * resinValue//await getResin(message.author.id);
-        sendResinMessage(message,resinSec);
+        // let resinSec = args[1] * resinValue
+        let resinSec = await getResin(message.author.id);
+        sendResinMessage(message, resinSec);
     }
 }
 

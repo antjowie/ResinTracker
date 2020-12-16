@@ -52,15 +52,17 @@ const remove = async (collection, document) => {
     }   
 }
 
+let count = 0;
 module.exports = {
     initialize,
     set,
     get,
-    remove
+    remove,
+    count
 };
 
-return;
 // Test code
+return;
 const data = {
     "chars": ["keqing", "keqing"],
     "user": "antjowie",

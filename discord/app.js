@@ -1,11 +1,11 @@
 const path = require('path');
+const db = require("./genshin_data.js");
+const dbHandler = require("./database_handler");
 const resin = require('./resin.js');
 const Discord = require('discord.js');
 
 const { start } = require("repl");
 const { token } = require("../token.json");
-const db = require("./genshin_data.js");
-const dbHandler = require("./database_handler");
 const { table } = require("table");
 dbHandler.initialize(false);
 
