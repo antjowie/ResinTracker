@@ -225,6 +225,10 @@ async function playStupidVoice(message) {
             console.log("Hello");
             var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "yes.mp3"));
             break;
+        case 'business':
+            // console.log("Hello");
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "business.mp3"));
+            break;
         default:
             console.log("Bye");
             var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tja.mp3"));
