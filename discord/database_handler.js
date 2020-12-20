@@ -36,21 +36,48 @@ const set = async (collection, document, data) => {
 // Gets the data of an document in the database
 const get = async (collection, document) => {
     try {
-        const doc = await db.collection(collection).doc(document).get(); 
+        const doc = await db.collection(collection).doc(document).get();
         return doc.data();
     } catch (error) {
         console.log(`Database get failed with ${error}`);
     }
 };
 
+/**
+ * Query: {
+ * key: value
+ * op: ==
+ * val: value
+ * }
+ * https://firebase.google.com/docs/firestore/query-data/get-data?authuser=0#get_multiple_documents_from_a_collection
+ */
+const getDocuments = async (collection, query) => {
+    try {
+        const collRef = db.collection(collection);
+        let snapshot;
+        if(query && "key" in query) snapshot = await collRef.where(query.key, query.op, query.val).get();
+        else snapshot = await collRef.get();
+        
+        let docs = {};
+        snapshot.forEach((doc) => {
+            docs[doc.id] = doc.data();
+            
+            // console.log(doc.id, "=>", doc.data());
+        });
+        
+        return docs;
+    } catch (error) {
+        console.log(`Database getDocuments failed with ${error}`);
+    }
+};
 // Removes a document from the database
 const remove = async (collection, document) => {
     try {
-        await db.collection(collection).doc(document).delete(); 
+        await db.collection(collection).doc(document).delete();
     } catch (error) {
         console.log(`Database delete failed with ${error}`);
-    }   
-}
+    }
+};
 
 let count = 0;
 module.exports = {
@@ -58,24 +85,28 @@ module.exports = {
     set,
     get,
     remove,
-    count
+    count,
 };
 
 // Test code
-return;
+if (require.main !== module) return;
+
+// return;
 const data = {
-    "chars": ["keqing", "keqing"],
-    "user": "antjowie",
-    "talent": "gold",
+    chars: ["keqing", "keqing"],
+    user: "antjowie",
+    talent: "gold",
 };
 
 initialize(true);
 const test = async () => {
     await set("Hello", "I am", data);
-    await set("Hello", "I am", { "chars": ["Keqing", "Keqing"] });
-    
+    await set("Hello", "I am", { chars: ["Keqing", "Keqing"] });
+    await set("Hello", "I am2", { chars: ["Keqing", "Keqing"] });
+
     console.log(await get("Hello", "I am"));
-    await remove("Hello", "I am");
-}
+    // await remove("Hello", "I am");
+    console.log(await getDocuments("Hello"));
+};
 
 test();
