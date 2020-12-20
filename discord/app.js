@@ -20,15 +20,16 @@ client.once('ready', async () => {
     console.log('Ready!');
 });
 
-client.login(token);
+client.on('message', async (message) => {
+    try {
+        await messageHandler(message);
+    } catch (error) {
+        console.log(error);
+        message.channel.send(error);
+    }
+});
 
-function startRevolution() {
-    nr = Math.floor(Math.random() * Math.floor(1000));
-    revolution = nr === 1;
-    return revolution;
-}
-
-client.on('message', async message => {
+const messageHandler = async (message) => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     var content = message.content.slice(prefix.length).trim().toLowerCase();
     var args = content.split(/ +/);
@@ -88,7 +89,15 @@ client.on('message', async message => {
         default:
             break;
     }
-});
+}
+
+client.login(token);
+
+function startRevolution() {
+    nr = Math.floor(Math.random() * Math.floor(1000));
+    revolution = nr === 1;
+    return revolution;
+}
 
 function calcRoyalWapons(BaseCritRate, basicDamage, critDamge) {
     var royalBuff = 8;
