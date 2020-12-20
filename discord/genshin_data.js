@@ -19,6 +19,7 @@ const puppeteer = require("puppeteer");
 const getGenshinDatabase = async () => {
     // Scrape website
     const url = "https://genshin.gg/farming";
+    console.log(`Expecting bundled chromium at ${puppeteer.executablePath()}`);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     // page.on("console", (msg) => console.log("PAGE ", msg.text()));

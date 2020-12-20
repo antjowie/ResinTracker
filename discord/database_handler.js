@@ -84,8 +84,8 @@ module.exports = {
     initialize,
     set,
     get,
+    getDocuments,
     remove,
-    count,
 };
 
 // Test code
