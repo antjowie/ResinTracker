@@ -1,11 +1,11 @@
 const path = require('path');
+const db = require("./genshin_data.js");
+const dbHandler = require("./database_handler");
 const resin = require('./resin.js');
 const Discord = require('discord.js');
 
 const { start } = require("repl");
 const { token } = require("../token.json");
-const db = require("./genshin_data.js");
-const dbHandler = require("./database_handler");
 const { table } = require("table");
 dbHandler.initialize(false);
 
@@ -20,15 +20,16 @@ client.once('ready', async () => {
     console.log('Ready!');
 });
 
-client.login(token);
+client.on('message', async (message) => {
+    try {
+        await messageHandler(message);
+    } catch (error) {
+        console.log(error);
+        message.channel.send(error);
+    }
+});
 
-function startRevolution() {
-    nr = Math.floor(Math.random() * Math.floor(1000));
-    revolution = nr === 1;
-    return revolution;
-}
-
-client.on('message', async message => {
+const messageHandler = async (message) => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     var content = message.content.slice(prefix.length).trim().toLowerCase();
     var args = content.split(/ +/);
@@ -88,7 +89,15 @@ client.on('message', async message => {
         default:
             break;
     }
-});
+}
+
+client.login(token);
+
+function startRevolution() {
+    nr = Math.floor(Math.random() * Math.floor(1000));
+    revolution = nr === 1;
+    return revolution;
+}
 
 function calcRoyalWapons(BaseCritRate, basicDamage, critDamge) {
     var royalBuff = 8;
@@ -153,6 +162,10 @@ async function playStupidVoice(message) {
         case 'yes':
             console.log("Hello");
             var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "yes.mp3"));
+            break;
+        case 'business':
+            // console.log("Hello");
+            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "business.mp3"));
             break;
         default:
             console.log("Bye");
