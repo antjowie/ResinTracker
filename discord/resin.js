@@ -122,11 +122,11 @@ const commandCallback = async (message) => {
         console.log(args[1]);
 
         await setResin(message.author.id, args[1]);
-        addAlert(message.author, resinSec);
-
+        
         // let resinSec = args[1] * resinValue
         let resinSec = await getResin(message.author.id);
         sendResinMessage(message, resinSec);
+        addAlert(message.author, resinSec);
     }
 };
 
