@@ -68,7 +68,7 @@ const createAlert = (user) => {
     // console.log(user)
     let localUser = user;
     return () => {
-        localUser.send(`Your resin will be capped at ${getTimeAtResinCap(resinAlertOffset)}!`);
+        localUser.send(`Heads up! Your resin will be capped at ${getTimeAtResinCap(resinAlertOffset)}!`);
     };
 };
 
@@ -77,7 +77,10 @@ const addAlert = (user, resin) => {
         clearTimeout(alerts[user.id]);
     }
     
-    alerts[user.id] = setTimeout(createAlert(user), (resin - resinAlertOffset) * 1000);
+    // Calcuate timeout time
+    let time = resinCap * resinValue - resin - resinAlertOffset;
+    
+    alerts[user.id] = setTimeout(createAlert(user), time * 1000);
 };
 
 const setupAlerts = async (discordClient) => {
@@ -88,8 +91,8 @@ const setupAlerts = async (discordClient) => {
         try {
             let resin = users[id].resin;
             let client = await discordClient.users.fetch(id);
-            client.send("Hello");
-            addAlert(client, await db.get("resin",id).resin);
+            client.send("Registering your resin alert...");
+            addAlert(client, users[id].resin);
             console.log(`Added ${client.username} to alerts`);
         } catch (error) {
             console.log(`Failed to add ${id} to alerts with ${error}`);
