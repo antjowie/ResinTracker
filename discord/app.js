@@ -1,22 +1,22 @@
-const path = require('path');
-const db = require("./genshin_data.js");
-const dbHandler = require("./database_handler");
-const resin = require('./resin.js');
-const Discord = require('discord.js');
+const prefix = '~';
 
-const { start } = require("repl");
+const db = require("./genshin_data.js");
+const path = require('path');
+const resin = require('./resin.js');
+const farm = require("./farm.js");
+
 const { token } = require("../token.json");
-const { table } = require("table");
-dbHandler.initialize(false);
+
+const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
-const prefix = '~';
 var connection;
 var genshinDict;
 
 client.once('ready', async () => {
     genshinDict = await db();
+    farm.setDictionary(genshinDict);
     console.log('Ready!');
 });
 
@@ -63,7 +63,7 @@ const messageHandler = async (message) => {
     revolution(startRevolution());
     switch (command) {
         case "farm":
-            message.channel.send(await farmHandler(args, message.author.id));
+            message.channel.send(await farm.farmHandler(args, message.author.id));
             break;
         case "stupid":
             playStupidVoice(message);

@@ -1,3 +1,11 @@
+const { table } = require("table");
+const dbHandler = require("./database_handler");
+dbHandler.initialize(false);
+var genshinDict;
+
+function setDictionary(dictionary){
+    genshinDict = dictionary;
+}
 
 async function farmHandler(args, userId) {
     if (!args[0]) {
@@ -23,7 +31,8 @@ async function farmHandler(args, userId) {
 
         return "```" + table(farmCharacters) + "```";
         } catch(e){
-            return 'shit man dit werkt weer niet'
+            console.log(e);
+            return 'kek'
         }
 
     } else if (args[0] === 'add') {
@@ -71,4 +80,9 @@ async function farmHandler(args, userId) {
     } else {
         return `command could not be found`;
     }
+}
+
+module.exports = {
+    farmHandler,
+    setDictionary
 }
