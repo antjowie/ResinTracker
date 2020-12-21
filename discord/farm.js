@@ -32,7 +32,7 @@ async function farmHandler(args, userId) {
         return "```" + table(farmCharacters) + "```";
         } catch(e){
             console.log(e);
-            return 'kek'
+            return 'error'
         }
 
     } else if (args[0] === 'add') {
