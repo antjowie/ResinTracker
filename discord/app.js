@@ -1,26 +1,25 @@
-const path = require('path');
-const db = require("./genshin_data.js");
-const dbHandler = require("./database_handler");
-const resin = require('./resin.js');
-const Discord = require('discord.js');
+const prefix = '~';
 
-const { start } = require("repl");
+const db = require("./genshin_data.js");
+const path = require('path');
+const resin = require('./resin.js');
+const farm = require("./farm.js");
+
 const { token } = require("../token.json");
-const { table } = require("table");
-dbHandler.initialize(false);
+
+const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
-const prefix = '~';
 var connection;
 var genshinDict;
 // var alerts = resin.setupAlerts()
 
 client.once('ready', async () => {
-    
     // await genshinDict;
     // Need Discord to be set up
     genshinDict = await db();
+    farm.setDictionary(genshinDict);
     await resin.setupAlerts(client);
     console.log('Ready!');
 });
@@ -68,7 +67,7 @@ const messageHandler = async (message) => {
     revolution(startRevolution());
     switch (command) {
         case "farm":
-            message.channel.send(await farmHandler(args, message.author.id));
+            message.channel.send(await farm.farmHandler(args, message.author.id));
             break;
         case "stupid":
             playStupidVoice(message);
@@ -135,77 +134,6 @@ function calcRoyalWapons(BaseCritRate, basicDamage, critDamge) {
 
     return `damage done:${damageDone} crits hit: ${critCount}`;
 }
-
-async function farmHandler(args, userId) {
-    if (!args[0]) {
-        var team = (await dbHandler.get("resin", userId)).team;
-        var day = new Date().getDay();
-        
-        if (day === 0) {
-            return "you can farm all books today";
-        }
-
-        let farmCharacters = [
-            ["Talent", "Name", "Location"]
-        ];
-
-        team.forEach(name => {
-            var char = genshinDict.chars[name];
-            var talent = char.talent;
-            if ((day - 1) % 3 === genshinDict.talents[talent]) {
-                farmCharacters.push([talent, name, "Still dont have a location object"]);
-            }
-        });
-
-        return "```" + table(farmCharacters) + "```";
-
-    } else if (args[0] === 'add') {
-        var user = await dbHandler.get("resin", userId);
-
-        if (genshinDict.chars[args[1]] && user.team.indexOf(args[1])) {
-            user.team.push(args[1]);
-            await dbHandler.set("resin", userId, { "team": user.team });
-            return `your team has been updated`;
-        } else {
-            return `could not find ${args[1]}`
-        }
-    }
-    else if (args[0] === 'set') {
-        args.shift();
-        var user = await dbHandler.get("resin", userId);
-
-        for (var i = 0; i < args.length; i++) {
-            var char = genshinDict.chars[args[i]];
-
-            if (!char) {
-                return `could not find ${args[i]}`;
-            }
-        }
-        await dbHandler.set("resin", userId, { "team": args });
-        return `your team has been updated`;
-
-    } else if (args[0] === 'remove') {
-        var user = await dbHandler.get("resin", userId);
-
-        for (var i = 1; i < args.length; i++) {
-            if (genshinDict.chars[args[i]] && user.team.indexOf(args[i])) {
-                user.team.splice(user.team.indexOf(args[i]), 1);
-            } else {
-                return `could not remove ${args[i]} from the users team`;
-            }
-        }
-
-        await dbHandler.set("resin", userId, { "team": user.team });
-        return `your team has been updated ${user.team}`;
-
-    } else if (args[0] === 'get') {
-        var user = await dbHandler.get("resin", userId);
-        return `${user.team}`;
-    } else {
-        return `command could not be found`;
-    }
-}
-
 
 async function playStupidVoice(message) {
     const args = message.content.slice(`${prefix}stupid`.length).trim().split(/ +/);
