@@ -63,19 +63,21 @@ const sendResinMessage = (message, resinSec) => {
 
 let alerts = {};
 const resinAlertOffset = 10 * resinValue;
+
 const createAlert = (user) => {
-    let msg = user;
+    // console.log(user)
+    let localUser = user;
     return () => {
-        msg.send(`Your resin will be capped at ${getTimeAtResinCap(resinAlertOffset)}!`);
+        localUser.send(`Your resin will be capped at ${getTimeAtResinCap(resinAlertOffset)}!`);
     };
 };
 
-const addAlert = (user) => {
+const addAlert = (user, resin) => {
     if(user.id in alerts) {
         clearTimeout(alerts[user.id]);
     }
     
-    alerts[user.id] = setTimeout(createAlert(user));
+    alerts[user.id] = setTimeout(createAlert(user), (resin - resinAlertOffset) * 1000);
 };
 
 const setupAlerts = async (discordClient) => {
@@ -85,11 +87,12 @@ const setupAlerts = async (discordClient) => {
     for (id in users) {
         try {
             let resin = users[id].resin;
-            let client = discordClient.users.fetch(id);
-            addAlert(client);
+            let client = await discordClient.users.fetch(id);
+            client.send("Hello");
+            addAlert(client, await db.get("resin",id).resin);
             console.log(`Added ${client.username} to alerts`);
         } catch (error) {
-            console.log(`Failed to add ${id} to alerts`);
+            console.log(`Failed to add ${id} to alerts with ${error}`);
         }
     }
 };
@@ -116,6 +119,7 @@ const commandCallback = async (message) => {
         console.log(args[1]);
 
         await setResin(message.author.id, args[1]);
+        addAlert(message.author, resinSec);
 
         // let resinSec = args[1] * resinValue
         let resinSec = await getResin(message.author.id);
@@ -125,6 +129,7 @@ const commandCallback = async (message) => {
 
 module.exports = {
     commandCallback,
+    setupAlerts
 };
 
 if (require.main !== module) return;

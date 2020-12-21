@@ -14,9 +14,14 @@ const client = new Discord.Client();
 const prefix = '~';
 var connection;
 var genshinDict;
+// var alerts = resin.setupAlerts()
 
 client.once('ready', async () => {
+    
+    // await genshinDict;
+    // Need Discord to be set up
     genshinDict = await db();
+    await resin.setupAlerts(client);
     console.log('Ready!');
 });
 

@@ -86,5 +86,7 @@ const getGenshinDatabase = async () => {
 
 module.exports = getGenshinDatabase;
 
+if(require.main !== module) return;
+
 const start = async() => console.log(await getGenshinDatabase());
 start();
