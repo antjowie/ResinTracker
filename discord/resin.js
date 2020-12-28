@@ -91,7 +91,7 @@ const setupAlerts = async (discordClient) => {
         try {
             let resin = users[id].resin;
             let client = await discordClient.users.fetch(id);
-            client.send("Registering your resin alert...");
+            // client.send("Registering your resin alert...");
             addAlert(client, users[id].resin);
             console.log(`Added ${client.username} to alerts`);
         } catch (error) {

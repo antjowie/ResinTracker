@@ -1,13 +1,13 @@
-const prefix = '~';
+const prefix = "~";
 
 const db = require("./genshin_data.js");
-const path = require('path');
-const resin = require('./resin.js');
+const path = require("path");
+const resin = require("./resin.js");
 const farm = require("./farm.js");
 
 const { token } = require("../token.json");
 
-const Discord = require('discord.js');
+const Discord = require("discord.js");
 
 const client = new Discord.Client();
 
@@ -15,16 +15,16 @@ var connection;
 var genshinDict;
 // var alerts = resin.setupAlerts()
 
-client.once('ready', async () => {
+client.once("ready", async () => {
     // await genshinDict;
     // Need Discord to be set up
     genshinDict = await db();
     farm.setDictionary(genshinDict);
     await resin.setupAlerts(client);
-    console.log('Ready!');
+    console.log("Ready!");
 });
 
-client.on('message', async (message) => {
+client.on("message", async (message) => {
     try {
         await messageHandler(message);
     } catch (error) {
@@ -46,19 +46,40 @@ const messageHandler = async (message) => {
             if (message.member.voice.channel) {
                 connection = await message.member.voice.channel.join();
 
-                var dispatcher1 = connection.play(path.resolve(process.argv[1], "..", "sounds", "revolution1.wav"));
+                var dispatcher1 = connection.play(
+                    path.resolve(
+                        process.argv[1],
+                        "..",
+                        "sounds",
+                        "revolution1.wav"
+                    )
+                );
 
-                dispatcher1.on('finish', () => {
-                    var dispatcher2 = connection.play(path.resolve(process.argv[1], "..", "sounds", "revolution2.mp3"));
-                    dispatcher2.on('finish', () => {
-                        var dispatcher3 = connection.play(path.resolve(process.argv[1], "..", "sounds", "revolution3.mp3"));
-                        dispatcher3.on('finish', () => {
+                dispatcher1.on("finish", () => {
+                    var dispatcher2 = connection.play(
+                        path.resolve(
+                            process.argv[1],
+                            "..",
+                            "sounds",
+                            "revolution2.mp3"
+                        )
+                    );
+                    dispatcher2.on("finish", () => {
+                        var dispatcher3 = connection.play(
+                            path.resolve(
+                                process.argv[1],
+                                "..",
+                                "sounds",
+                                "revolution3.mp3"
+                            )
+                        );
+                        dispatcher3.on("finish", () => {
                             connection.disconnect();
                         });
                     });
                 });
             } else {
-                message.channel.send('tá am na ndaoine thart');
+                message.channel.send("tá am na ndaoine thart");
             }
             return;
         }
@@ -67,7 +88,9 @@ const messageHandler = async (message) => {
     revolution(startRevolution());
     switch (command) {
         case "farm":
-            message.channel.send(await farm.farmHandler(args, message.author.id));
+            message.channel.send(
+                await farm.farmHandler(args, message.author.id)
+            );
             break;
         case "stupid":
             playStupidVoice(message);
@@ -83,17 +106,18 @@ const messageHandler = async (message) => {
             revolution(true);
             break;
         case "ping":
-            message.channel.send('Pong.');
-            break
+            message.channel.send("Pong.");
+            break;
         case "end" || "stop":
-            message.channel.send('好的，我這次會聽，但是接管這台服務器只是時間問題');
-            if (connection)
-                connection.disconnect();
-            break
+            message.channel.send(
+                "好的，我這次會聽，但是接管這台服務器只是時間問題"
+            );
+            if (connection) connection.disconnect();
+            break;
         default:
             break;
     }
-}
+};
 
 client.login(token);
 
@@ -136,54 +160,146 @@ function calcRoyalWapons(BaseCritRate, basicDamage, critDamge) {
 }
 
 async function playStupidVoice(message) {
-    const args = message.content.slice(`${prefix}stupid`.length).trim().split(/ +/);
+    const args = message.content
+        .slice(`${prefix}stupid`.length)
+        .trim()
+        .split(/ +/);
     const command = args.shift().toLowerCase();
 
     if (!connection) connection = await message.member.voice.channel.join();
 
     switch (command) {
-        case 'neville':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "qwert.mp3"));
+        case "neville":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "qwert.mp3")
+            );
             break;
-        case 'that':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "kleine_kindjes.wav"));
+        case "that":
+            var dispatcher = connection.play(
+                path.resolve(
+                    process.argv[1],
+                    "..",
+                    "sounds",
+                    "kleine_kindjes.wav"
+                )
+            );
             break;
-        case 'rezero':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "PTSD.mp3"));
+        case "rezero":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "PTSD.mp3")
+            );
             break;
-        case 'tay':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "Strakke_tay.mp3"));
+        case "tay":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "Strakke_tay.mp3")
+            );
             break;
-        case 'tay2':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tay_owo.wav"));
+        case "tay2":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "tay_owo.wav")
+            );
             break;
-        case 'tay3':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "zo_hardd.wav"));
+        case "tay3":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "zo_hardd.wav")
+            );
             break;
-        case 'tay4':
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tay4.mp3"));
+        case "tay4":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "tay4.mp3")
+            );
             break;
-        case 'yes':
+        case "yes":
             console.log("Hello");
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "yes.mp3"));
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "yes.mp3")
+            );
             break;
-        case 'business':
+        case "business":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "business.mp3")
+            );
+            break;
+        case "snake":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "snake.mp3")
+            );
+            break;
+        case "ping":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3")
+            );
+            break;
+        case "on":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "startup.mp3")
+            );
+            break;
+        case "off":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "shutdown.mp3")
+            );
+            break;
+        case "biter":
             // console.log("Hello");
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "business.mp3"));
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "biter.mp3")
+            );
             break;
+        case "mario":
+        case "jeremy":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "mario.mp3")
+            );
+            break;
+        case "jeremy2":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "jeremy2.mp3")
+            );
+            break;
+        case "longshot":
+        case "jeremy3":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "longshot.mp3")
+            );
+            break;
+        case "zameer":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "zameer.mp3")
+            );
+            break;
+        case "daniel":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "dabiel.mp3")
+            );
+            break;
+        case "taariq":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "tq.mp3")
+            );
+            break;
+
         default:
             console.log("Bye");
-            var dispatcher = connection.play(path.resolve(process.argv[1], "..", "sounds", "tja.mp3"));
-            break
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "tja.mp3")
+            );
+            break;
     }
 
-    dispatcher.on('start', () => {
-        console.log('audio.mp3 is now playing!');
+    dispatcher.on("start", () => {
+        console.log("audio.mp3 is now playing!");
     });
 
-    dispatcher.on('finish', () => {
-        console.log('audio.mp3 has finished playing!');
+    dispatcher.on("finish", () => {
+        console.log("audio.mp3 has finished playing!");
     });
 
-    message.channel.send('akwụna ' + command);
+    message.channel.send("akwụna " + command);
 }
