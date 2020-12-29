@@ -227,7 +227,12 @@ async function playStupidVoice(message) {
             break;
         case "ping":
             var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3")
+                path.resolve(
+                    process.argv[1],
+                    "..",
+                    "sounds",
+                    Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3"
+                )
             );
             break;
         case "on":
@@ -282,6 +287,13 @@ async function playStupidVoice(message) {
             // console.log("Hello");
             var dispatcher = connection.play(
                 path.resolve(process.argv[1], "..", "sounds", "tq.mp3")
+            );
+            break;
+
+        case "moto":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "moto.mp3")
             );
             break;
 
