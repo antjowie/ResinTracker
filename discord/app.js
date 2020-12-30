@@ -290,6 +290,13 @@ async function playStupidVoice(message) {
             );
             break;
 
+        case "pina":
+            // console.log("Hello");
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "pinacolada.mp3")
+            );
+            break;
+            
         case "moto":
             // console.log("Hello");
             var dispatcher = connection.play(
@@ -311,6 +318,8 @@ async function playStupidVoice(message) {
 
     dispatcher.on("finish", () => {
         console.log("audio.mp3 has finished playing!");
+        
+        if(Math.random() * 100 > 90) playStupidVoice(message);
     });
 
     message.channel.send("akwụna " + command);
