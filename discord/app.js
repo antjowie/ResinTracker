@@ -319,8 +319,11 @@ async function playStupidVoice(message) {
     dispatcher.on("finish", () => {
         console.log("audio.mp3 has finished playing!");
         
-        if(Math.random() * 100 > 50) playStupidVoice(message);
+        let num = Math.fround(Math.random() * 100);
+        let chance = 50;
+        message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
+        if(num > chance) playStupidVoice(message);
     });
 
-    message.channel.send("akwụna " + command);
+    // message.channel.send("akwụna " + command);
 }
