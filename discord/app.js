@@ -231,7 +231,8 @@ async function playStupidVoice(message) {
                     process.argv[1],
                     "..",
                     "sounds",
-                    Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3"
+                    "ping.mp3"
+                    // Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3"
                 )
             );
             break;

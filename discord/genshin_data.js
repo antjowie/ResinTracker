@@ -22,7 +22,7 @@ const getGenshinDatabase = async () => {
     console.log(`Expecting bundled chromium at ${puppeteer.executablePath()}`);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    // page.on("console", (msg) => console.log("PAGE ", msg.text()));
+    page.on("console", (msg) => console.log("PAGE ", msg.text()));
 
     await page.goto(url);
 
@@ -45,20 +45,20 @@ const getGenshinDatabase = async () => {
             // Iterate over each column in a row
             row.querySelectorAll("div.rt-td").forEach((elem, column) => {
                 if (column === 0) {
-                    // console.log(`Book ${elem.innerText}`);
+                    console.log(`Book ${elem.innerText}`);
                     material = elem.innerText;
                 } else if (column === 1) {
-                    // console.log(`Days ${elem.innerText}`);
+                    console.log(`Days ${elem.innerText}`);
                     day = elem.innerText;
                     if (day.startsWith("Monday")) day = 0;
                     else if (day.startsWith("Tuesday")) day = 1;
                     else if (day.startsWith("Wednesday")) day = 2;
                     else isBoss = true;
-                } else if (column === 2) {
-                    elem.children.forEach((a) => {
+                } else if (column === 2) {                    
+                    Array.from(elem.children).forEach(a => {
                         chars.push(a.querySelector("h2").innerText);
                     });
-                    // console.log(`Characters ${chars}`);
+                    console.log(`Characters ${chars}`);
                 }
             });
             
