@@ -305,6 +305,24 @@ async function playStupidVoice(message) {
             );
             break;
 
+        case "seiso":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "seiso.mp3")
+            );
+            break;
+    
+        case "whotao":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "whotao.ogg")
+            );
+            break;
+            
+        case "xiao":
+            var dispatcher = connection.play(
+                path.resolve(process.argv[1], "..", "sounds", "xiao.ogg")
+            );
+            break;
+            
         default:
             console.log("Bye");
             var dispatcher = connection.play(
