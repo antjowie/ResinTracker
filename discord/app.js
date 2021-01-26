@@ -4,10 +4,11 @@ const db = require("./genshin_data.js");
 const path = require("path");
 const resin = require("./resin.js");
 const farm = require("./farm.js");
-
+const fs = require('fs');
 const { token } = require("../token.json");
 
 const Discord = require("discord.js");
+const { publicDecrypt } = require("crypto");
 
 const client = new Discord.Client();
 
@@ -48,8 +49,7 @@ const messageHandler = async (message) => {
 
                 var dispatcher1 = connection.play(
                     path.resolve(
-                        process.argv[1],
-                        "..",
+                        "public",
                         "sounds",
                         "revolution1.wav"
                     )
@@ -58,8 +58,7 @@ const messageHandler = async (message) => {
                 dispatcher1.on("finish", () => {
                     var dispatcher2 = connection.play(
                         path.resolve(
-                            process.argv[1],
-                            "..",
+                            "public",
                             "sounds",
                             "revolution2.mp3"
                         )
@@ -67,8 +66,7 @@ const messageHandler = async (message) => {
                     dispatcher2.on("finish", () => {
                         var dispatcher3 = connection.play(
                             path.resolve(
-                                process.argv[1],
-                                "..",
+                                "public",
                                 "sounds",
                                 "revolution3.mp3"
                             )
@@ -168,181 +166,27 @@ async function playStupidVoice(message) {
 
     if (!connection) connection = await message.member.voice.channel.join();
 
-    switch (command) {
-        case "neville":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "qwert.mp3")
-            );
-            break;
-        case "that":
-            var dispatcher = connection.play(
-                path.resolve(
-                    process.argv[1],
-                    "..",
-                    "sounds",
-                    "kleine_kindjes.wav"
-                )
-            );
-            break;
-        case "rezero":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "PTSD.mp3")
-            );
-            break;
-        case "tay":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "Strakke_tay.mp3")
-            );
-            break;
-        case "tay2":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "tay_owo.wav")
-            );
-            break;
-        case "tay3":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "zo_hardd.wav")
-            );
-            break;
-        case "tay4":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "tay4.mp3")
-            );
-            break;
-        case "yes":
-            console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "yes.mp3")
-            );
-            break;
-        case "business":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "business.mp3")
-            );
-            break;
-        case "snake":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "snake.mp3")
-            );
-            break;
-        case "ping":
-            var dispatcher = connection.play(
-                path.resolve(
-                    process.argv[1],
-                    "..",
-                    "sounds",
-                    "ping.mp3"
-                    // Math.random() * 100 < 25 ? "pingrape.mp3" : "ping.mp3"
-                )
-            );
-            break;
-        case "on":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "startup.mp3")
-            );
-            break;
-        case "off":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "shutdown.mp3")
-            );
-            break;
-        case "biter":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "biter.mp3")
-            );
-            break;
-        case "mario":
-        case "jeremy":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "mario.mp3")
-            );
-            break;
-        case "jeremy2":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "jeremy2.mp3")
-            );
-            break;
-        case "longshot":
-        case "jeremy3":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "longshot.mp3")
-            );
-            break;
-        case "zameer":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "zameer.mp3")
-            );
-            break;
-        case "daniel":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "dabiel.mp3")
-            );
-            break;
-        case "taariq":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "tq.mp3")
-            );
-            break;
+    fs.stat(`public/sounds/${command}.mp3`, (err, stats) => {
+        if (err) {
+            message.channel.send('Audio file not found');
+            return;
+        }
 
-        case "pina":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "pinacolada.mp3")
-            );
-            break;
-            
-        case "moto":
-            // console.log("Hello");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "moto.mp3")
-            );
-            break;
+        var dispatcher = connection.play(
+            path.resolve('public', "sounds", command + '.mp3')
+        );
 
-        case "seiso":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "seiso.mp3")
-            );
-            break;
-    
-        case "whotao":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "whotao.ogg")
-            );
-            break;
-            
-        case "xiao":
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "xiao.ogg")
-            );
-            break;
-            
-        default:
-            console.log("Bye");
-            var dispatcher = connection.play(
-                path.resolve(process.argv[1], "..", "sounds", "tja.mp3")
-            );
-            break;
-    }
+        dispatcher.on("start", () => {
+            console.log("audio.mp3 is now playing!");
+        });
 
-    dispatcher.on("start", () => {
-        console.log("audio.mp3 is now playing!");
+        dispatcher.on("finish", () => {
+            console.log("audio.mp3 has finished playing!");
+
+            let num = Math.fround(Math.random() * 100);
+            let chance = 50;
+            message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
+            if (num > chance) playStupidVoice(message);
+        });
     });
-
-    dispatcher.on("finish", () => {
-        console.log("audio.mp3 has finished playing!");
-        
-        let num = Math.fround(Math.random() * 100);
-        let chance = 50;
-        message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
-        if(num > chance) playStupidVoice(message);
-    });
-
-    // message.channel.send("akwụna " + command);
 }
