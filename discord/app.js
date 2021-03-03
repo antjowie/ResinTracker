@@ -4,6 +4,7 @@ const db = require("./genshin_data.js");
 const path = require("path");
 const resin = require("./resin.js");
 const farm = require("./farm.js");
+const timezone = require("./timezone.js");
 const fs = require('fs');
 const { token } = require("../token.json");
 
@@ -106,11 +107,18 @@ const messageHandler = async (message) => {
         case "ping":
             message.channel.send("Pong.");
             break;
-        case "end" || "stop":
+        case "end":
+        case "stop":
             message.channel.send(
                 "好的，我這次會聽，但是接管這台服務器只是時間問題"
             );
             if (connection) connection.disconnect();
+            break;
+        case "time": 
+        case "t": 
+        case "tz":
+            console.log("calling with " + args.join(" "));
+            message.channel.send(await timezone(args.join(" ")));
             break;
         default:
             break;
@@ -166,27 +174,35 @@ async function playStupidVoice(message) {
 
     if (!connection) connection = await message.member.voice.channel.join();
 
-    fs.stat(`public/sounds/${command}.mp3`, (err, stats) => {
+    // Check if file exists
+    let extension = ".mp3";
+    fs.stat(`public/sounds/${command}${extension}`, (err, stats) => {
         if (err) {
-            message.channel.send('Audio file not found');
-            return;
+            extension = ".ogg";
+            fs.stat(`public/sounds/${command}${extension}`, (err, stats) => {
+                if(err) {
+                    message.channel.send('Audio file not found');
+                    return;
+                }
+            })
         }
+    })
 
-        var dispatcher = connection.play(
-            path.resolve('public', "sounds", command + '.mp3')
-        );
+    // Play le file
+    var dispatcher = connection.play(
+        path.resolve('public', "sounds", command + extension)
+    );
 
-        dispatcher.on("start", () => {
-            console.log("audio.mp3 is now playing!");
-        });
+    dispatcher.on("start", () => {
+        console.log("audio is now playing!");
+    });
 
-        dispatcher.on("finish", () => {
-            console.log("audio.mp3 has finished playing!");
+    dispatcher.on("finish", () => {
+        console.log("audio has finished playing!");
 
-            let num = Math.fround(Math.random() * 100);
-            let chance = 50;
-            message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
-            if (num > chance) playStupidVoice(message);
-        });
+        let num = Math.fround(Math.random() * 100);
+        let chance = 50;
+        message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
+        if (num > chance) playStupidVoice(message);
     });
 }
