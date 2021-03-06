@@ -5,7 +5,7 @@ const path = require("path");
 const resin = require("./resin.js");
 const farm = require("./farm.js");
 const timezone = require("./timezone.js");
-const fs = require('fs');
+const fs = require("fs");
 const { token } = require("../token.json");
 
 const Discord = require("discord.js");
@@ -49,28 +49,16 @@ const messageHandler = async (message) => {
                 connection = await message.member.voice.channel.join();
 
                 var dispatcher1 = connection.play(
-                    path.resolve(
-                        "public",
-                        "sounds",
-                        "revolution1.wav"
-                    )
+                    path.resolve("public", "sounds", "revolution1.wav")
                 );
 
                 dispatcher1.on("finish", () => {
                     var dispatcher2 = connection.play(
-                        path.resolve(
-                            "public",
-                            "sounds",
-                            "revolution2.mp3"
-                        )
+                        path.resolve("public", "sounds", "revolution2.mp3")
                     );
                     dispatcher2.on("finish", () => {
                         var dispatcher3 = connection.play(
-                            path.resolve(
-                                "public",
-                                "sounds",
-                                "revolution3.mp3"
-                            )
+                            path.resolve("public", "sounds", "revolution3.mp3")
                         );
                         dispatcher3.on("finish", () => {
                             connection.disconnect();
@@ -114,8 +102,8 @@ const messageHandler = async (message) => {
             );
             if (connection) connection.disconnect();
             break;
-        case "time": 
-        case "t": 
+        case "time":
+        case "t":
         case "tz":
             console.log("calling with " + args.join(" "));
             message.channel.send(await timezone(args.join(" ")));
@@ -178,19 +166,14 @@ async function playStupidVoice(message) {
     let extension = ".mp3";
     fs.stat(`public/sounds/${command}${extension}`, (err, stats) => {
         if (err) {
-            extension = ".ogg";
-            fs.stat(`public/sounds/${command}${extension}`, (err, stats) => {
-                if(err) {
-                    message.channel.send('Audio file not found');
-                    return;
-                }
-            })
+            message.channel.send("Audio file not found");
+            return;
         }
-    })
+    });
 
     // Play le file
     var dispatcher = connection.play(
-        path.resolve('public', "sounds", command + extension)
+        path.resolve("public", "sounds", command + extension)
     );
 
     dispatcher.on("start", () => {
@@ -202,7 +185,11 @@ async function playStupidVoice(message) {
 
         let num = Math.fround(Math.random() * 100);
         let chance = 50;
-        message.channel.send(`num ${num} chance ${chance}: ${num > chance ? "and again!" : "akwụna " + command}`);
+        message.channel.send(
+            `num ${num} chance ${chance}: ${
+                num > chance ? "and again!" : "akwụna " + command
+            }`
+        );
         if (num > chance) playStupidVoice(message);
     });
 }
