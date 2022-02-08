@@ -23,7 +23,7 @@
     "firebase": "^8.1.1",
     "node-opus": "^0.3.3",
     "opus": "0.0.0",
-    "opusscript": "0.0.7",
+    "opusscript": "0.0.8",
     "puppeteer": "^5.5.0",
     "querystring": "^0.2.0",
     "rm": "^0.1.8",
