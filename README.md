@@ -1,4 +1,15 @@
-## What is ResinTracker?
+# NOTE
+**This is definitely not a genshin bot anymore. ** Just use the run.bat script to run the bot
+
+## Installation
+Required node and python. Have a token.json file with one element representing the token.
+```json
+{
+    "token": "discordToken"
+}
+```
+
+## What was ResinTracker?
 Resin is the 'energy currency' of [Genshin Impact][gensinimpact] (GI). The ResinTracker project is a fullstack project. For the frontend you can check out the [Discord bot][discord] (that will notify you when your Resin is about to cap) or the [web app][website]. To read more about the technologies go to [services](#services).
 
 ## What is Genshin Impact and Resin?

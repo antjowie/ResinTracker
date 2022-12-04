@@ -150,11 +150,11 @@ const messageHandler = async (message) => {
     case "ping":
       message.channel.send("Pong.");
       break;
-    case "end":
-    case "stop":
-      message.channel.send("好的，我這次會聽，但是接管這台服務器只是時間問題");
-      if (connection) connection.disconnect();
-      break;
+    // case "end":
+    // case "stop":
+    //   message.channel.send("好的，我這次會聽，但是接管這台服務器只是時間問題");
+    //   if (connection) connection.disconnect();
+    //   break;
     case "time":
     case "t":
     case "tz":
